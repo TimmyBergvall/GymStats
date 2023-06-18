@@ -1,4 +1,4 @@
-import React, {useState, Route} from 'react';
+import React, {useState, Route, useEffect} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 import {
@@ -19,12 +19,15 @@ function Home({navigation}) {
   const user = auth().currentUser;
 
   const functionLogout = () => {
+    Promise.resolve(
     auth()
       .signOut()
       .then(() => 
-      console.log('User signed out!'));
-
-    navigation.navigate('Login');
+      console.log('User signed out!')
+    ).then(() =>
+    navigation.replace('Login')
+    )
+    );
   };
 
   return (
