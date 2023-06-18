@@ -1,4 +1,6 @@
 import React, {useState, Route} from 'react';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {ToastAndroid} from 'react-native';
 
 import {
   Button,
@@ -17,10 +19,61 @@ import {
 function Register({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-  const functionLogin = () => {
-    if (email == '123') {
-      navigation.navigate('Home');
+  const functionRegister = () => {
+    if (email === '') {
+      ToastAndroid.show('Please enter an email', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (reg.test(email) === false) {
+      ToastAndroid.show('Please enter a valid email', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (password.length < 6) {
+      ToastAndroid.show(
+        'Password must be at least 6 characters',
+        ToastAndroid.SHORT,
+      );
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      ToastAndroid.show('Passwords do not match', ToastAndroid.SHORT);
+      console.log(password, passwordConfirm);
+      return;
+    }
+
+    try {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('User account created & signed in!');
+          navigation.navigate('Home');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            console.log('That email address is already in use!');
+            ToastAndroid.show(
+              'That email address is already in use!',
+              ToastAndroid.SHORT,
+            );
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+            ToastAndroid.show(
+              'That email address is invalid!',
+              ToastAndroid.SHORT,
+            );
+          }
+          console.error(error);
+        });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -43,10 +96,10 @@ function Register({navigation}) {
         style={styles.inputText}
         placeholder="Confirm Password"
         secureTextEntry={true}
-        onChangeText={password => setPassword(password)}
+        onChangeText={passwordconfirm => setPasswordConfirm(passwordconfirm)}
       />
 
-      <TouchableOpacity onPress={functionLogin}>
+      <TouchableOpacity onPress={functionRegister}>
         <Text style={styles.registerButton}>Register</Text>
       </TouchableOpacity>
 

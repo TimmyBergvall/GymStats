@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {ToastAndroid} from 'react-native';
 
 
 import {
@@ -20,6 +21,7 @@ import {
 function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
   useEffect(() => {
   if (auth().currentUser) {
@@ -28,6 +30,21 @@ function Login({navigation}) {
   }, []);
 
   const functionLogin = () => {
+    if (email === "") {
+      ToastAndroid.show('Please enter an email', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (reg.test(email) === false) {
+      ToastAndroid.show('The email-format is not valid', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (password.length === 0) {
+      ToastAndroid.show('Please enter your password', ToastAndroid.SHORT);
+      return;
+    }
+
     try {
       auth()
         .signInWithEmailAndPassword(email, password)
@@ -36,14 +53,11 @@ function Login({navigation}) {
           navigation.navigate('Home');
         })
         .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            console.log('That email address is already in use!');
-          }
-
           if (error.code === 'auth/invalid-email') {
             console.log('That email address is invalid!');
+            ToastAndroid.show('That email address is invalid!', ToastAndroid.SHORT);
           }
-          ToastAndroid.show(error, ToastAndroid.SHORT);
+          ToastAndroid.show("Wrong email or password", ToastAndroid.SHORT);
           console.error(error);
         });
     } catch (error) {
