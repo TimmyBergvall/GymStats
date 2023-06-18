@@ -1,4 +1,7 @@
-import React, {useState, Route} from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+
 
 import {
   Button,
@@ -19,8 +22,27 @@ function Login({navigation}) {
   const [password, setPassword] = useState('');
 
   const functionLogin = () => {
-    if (username == '123') {
-      navigation.navigate('Home');
+    try {
+      auth()
+        .signInWithEmailAndPassword(username, password)
+        .then(() => {
+          console.log('User account created & signed in!');
+          navigation.navigate('Home');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            console.log('That email address is already in use!');
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+          }
+
+          console.error(error);
+        });
+    } catch (error) {
+      console.log(error);
+
     }
   };
 
