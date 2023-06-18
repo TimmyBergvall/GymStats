@@ -1,4 +1,5 @@
 import React, {useState, Route} from 'react';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 import {
   Button,
@@ -15,18 +16,36 @@ import {
 } from 'react-native';
 
 function Home({navigation}) {
+  const user = auth().currentUser;
+
+  const functionLogout = () => {
+    auth()
+      .signOut()
+      .then(() => 
+      console.log('User signed out!'));
+
+    navigation.navigate('Login');
+  };
+
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
+      <Text style={styles.user}>{user.email}</Text>
+      <TouchableOpacity onPress={functionLogout}>
+        <Text style={styles.loginButton}>Logout</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 100,
-    marginBottom: 64,
+    marginTop: 30,
+    marginBottom: 5,
     fontSize: 28,
+    textAlign: 'center',
+  },
+  user: {
     textAlign: 'center',
   },
   loginButton: {
@@ -39,14 +58,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 25,
     marginTop: 24,
-  },
-  inputText: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginLeft: 64,
-    marginRight: 64,
-    marginBottom: 40,
   },
 });
 

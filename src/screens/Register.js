@@ -15,11 +15,11 @@ import {
 } from 'react-native';
 
 function Register({navigation}) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const functionLogin = () => {
-    if (username == '123') {
+    if (email == '123') {
       navigation.navigate('Home');
     }
   };
@@ -30,8 +30,8 @@ function Register({navigation}) {
 
       <TextInput
         style={styles.inputText}
-        placeholder="Username"
-        onChangeText={username => setUsername(username)}
+        placeholder="Email"
+        onChangeText={email => setEmail(email)}
       />
       <TextInput
         style={styles.inputText}

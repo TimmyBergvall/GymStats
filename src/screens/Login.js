@@ -18,13 +18,19 @@ import {
 } from 'react-native';
 
 function Login({navigation}) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+  if (auth().currentUser) {
+    navigation.navigate('Home');
+  }
+  }, []);
 
   const functionLogin = () => {
     try {
       auth()
-        .signInWithEmailAndPassword(username, password)
+        .signInWithEmailAndPassword(email, password)
         .then(() => {
           console.log('User account created & signed in!');
           navigation.navigate('Home');
@@ -37,12 +43,12 @@ function Login({navigation}) {
           if (error.code === 'auth/invalid-email') {
             console.log('That email address is invalid!');
           }
-
+          ToastAndroid.show(error, ToastAndroid.SHORT);
           console.error(error);
         });
     } catch (error) {
       console.log(error);
-
+      
     }
   };
 
@@ -52,8 +58,8 @@ function Login({navigation}) {
 
       <TextInput
         style={styles.inputText}
-        placeholder="Username"
-        onChangeText={username => setUsername(username)}
+        placeholder="Email"
+        onChangeText={email => setEmail(email)}
       />
       <TextInput
         style={styles.inputText}
