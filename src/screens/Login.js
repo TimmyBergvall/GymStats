@@ -73,11 +73,13 @@ function Login({navigation}) {
       <TextInput
         style={styles.inputText}
         placeholder="Email"
+        autoCapitalize="none"
         onChangeText={email => setEmail(email)}
       />
       <TextInput
         style={styles.inputText}
         placeholder="Password"
+        autoCapitalize="none"
         secureTextEntry={true}
         onChangeText={password => setPassword(password)}
       />
@@ -101,7 +103,7 @@ function Login({navigation}) {
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 100,
+    marginTop: 80,
     marginBottom: 64,
     fontSize: 28,
     textAlign: 'center',

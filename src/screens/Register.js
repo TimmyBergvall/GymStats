@@ -84,17 +84,20 @@ function Register({navigation}) {
       <TextInput
         style={styles.inputText}
         placeholder="Email"
+        autoCapitalize="none"
         onChangeText={email => setEmail(email)}
       />
       <TextInput
         style={styles.inputText}
         placeholder="Password"
+        autoCapitalize="none"
         secureTextEntry={true}
         onChangeText={password => setPassword(password)}
       />
       <TextInput
         style={styles.inputText}
         placeholder="Confirm Password"
+        autoCapitalize="none"
         secureTextEntry={true}
         onChangeText={passwordconfirm => setPasswordConfirm(passwordconfirm)}
       />
@@ -118,7 +121,7 @@ function Register({navigation}) {
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 100,
+    marginTop: 80,
     marginBottom: 64,
     fontSize: 28,
     textAlign: 'center',
