@@ -1,39 +1,33 @@
-import React, {useState, Route, useEffect} from 'react';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import React from 'react';
+import auth from '@react-native-firebase/auth';
+import {NavigationContainer, CommonActions} from '@react-navigation/native';
 
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  Touchable,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 function Home({navigation}) {
-  const user = auth().currentUser;
-
   const functionLogout = () => {
-    Promise.resolve(
     auth()
       .signOut()
-      .then(() => 
-      console.log('User signed out!')
-    ).then(() =>
-    navigation.replace('Login')
-    )
-    );
+      .then(() => {
+        console.log('User signed out!');
+        if (navigation.canGoBack()) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'Login'}],
+            }),
+          );
+        }
+      })
+      .catch(error => {
+        console.log('Error signing out:', error);
+      });
   };
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
-      <Text style={styles.user}>{user.email}</Text>
+
       <TouchableOpacity onPress={functionLogout}>
         <Text style={styles.loginButton}>Logout</Text>
       </TouchableOpacity>
@@ -41,14 +35,13 @@ function Home({navigation}) {
   );
 }
 
+const HomeScreen = ({navigation}) => <Home navigation={navigation} />;
+
 const styles = StyleSheet.create({
   startMessage: {
     marginTop: 30,
     marginBottom: 5,
     fontSize: 28,
-    textAlign: 'center',
-  },
-  user: {
     textAlign: 'center',
   },
   loginButton: {
@@ -64,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default HomeScreen;

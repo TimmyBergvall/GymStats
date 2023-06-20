@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {useEffect, useState} from 'react';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {ToastAndroid} from 'react-native';
-
 
 import {
   Button,
@@ -21,16 +20,16 @@ import {
 function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+  const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   useEffect(() => {
-  if (auth().currentUser) {
-    navigation.replace('Home');
-  }
+    if (auth().currentUser) {
+      navigation.navigate('SignedIn');
+    }
   }, []);
 
   const functionLogin = () => {
-    if (email === "") {
+    if (email === '') {
       ToastAndroid.show('Please enter an email', ToastAndroid.SHORT);
       return;
     }
@@ -50,19 +49,21 @@ function Login({navigation}) {
         .signInWithEmailAndPassword(email, password)
         .then(() => {
           console.log('User account created & signed in!');
-          navigation.replace('Home');
+          navigation.replace('SignedIn');
         })
         .catch(error => {
           if (error.code === 'auth/invalid-email') {
             console.log('That email address is invalid!');
-            ToastAndroid.show('That email address is invalid!', ToastAndroid.SHORT);
+            ToastAndroid.show(
+              'That email address is invalid!',
+              ToastAndroid.SHORT,
+            );
           }
-          ToastAndroid.show("Wrong email or password", ToastAndroid.SHORT);
+          ToastAndroid.show('Wrong email or password', ToastAndroid.SHORT);
           console.error(error);
         });
     } catch (error) {
       console.log(error);
-      
     }
   };
 
