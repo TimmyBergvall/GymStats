@@ -1,36 +1,19 @@
 import React from 'react';
 import auth from '@react-native-firebase/auth';
 import {NavigationContainer, CommonActions} from '@react-navigation/native';
-
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 function Home({navigation}) {
-  const functionLogout = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log('User signed out!');
-        if (navigation.canGoBack()) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Login'}],
-            }),
-          );
-        }
-      })
-      .catch(error => {
-        console.log('Error signing out:', error);
-      });
-  };
+ 
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
 
-      <TouchableOpacity onPress={functionLogout}>
-        <Text style={styles.loginButton}>Logout</Text>
-      </TouchableOpacity>
+      <Icon name="home" size={30} color="#900" />
+
     </ScrollView>
   );
 }

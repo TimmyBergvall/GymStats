@@ -1,22 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import auth from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
 import Home from './src/screens/Home';
 import Weight from './src/screens/Weight';
+import Settings from './src/screens/Settings';
+import { Touchable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function SignedInNavigator() {
+  const navigation = useNavigation(); 
+
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerStyle: { backgroundColor: '#276B7F' },
+        headerTitleStyle: { fontWeight: 'bold' },
+        tabBarStyle: { backgroundColor: '#333333' },
+        headerRight: () => 
+          <TouchableOpacity onPress={() => navigation.navigate(Settings)} style={{ marginRight: 10 }}>
+            <Icon name="settings-outline" size={25} color="#fff" />
+          </TouchableOpacity>,
+
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'home-outline'; // Icon name for the Home screen
+          } else if (route.name === 'Weight') {
+            iconName = 'barbell-outline'; // Icon name for the Weight screen
+          }
+          // Add more conditions for additional screens
+
+          return <Icon name={iconName as string} size={size} color={color} />;
+        },
+      })}
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Weight" component={Weight} />
+      <Tab.Screen name="Settings" component={Settings} options={{ tabBarButton: () => null }} />
       {/* Add more screens as needed */}
     </Tab.Navigator>
   );

@@ -20,7 +20,7 @@ function Weight({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
-      <Text style={styles.startMessage}>Welcome to GymStats</Text>
+      <Text style={styles.startMessage}>Weight</Text>
     </ScrollView>
   );
 }
