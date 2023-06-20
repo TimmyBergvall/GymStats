@@ -114,10 +114,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
     textAlign: 'center',
-    marginLeft: 64,
-    marginRight: 64,
+    marginLeft: 80,
+    marginRight: 80,
     marginBottom: 20,
-    borderRadius: 25,
+    borderRadius: 10,
     marginTop: 24,
   },
   inputText: {

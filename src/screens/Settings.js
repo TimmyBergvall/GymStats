@@ -21,24 +21,22 @@ function Settings({navigation}) {
   const user = auth().currentUser;
 
   const functionLogout = () => {
-    
     Alert.alert(
-        'Sign out',
-        'Are you sure you want to sign out?',
-        [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel'
-            },
-            {
-                text: 'OK',
-                onPress: () => signOut()
-            }
-        ],
-        { cancelable: false }
+      'Sign out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => signOut(),
+        },
+      ],
+      {cancelable: false},
     );
-
   };
 
   function signOut() {
@@ -68,9 +66,7 @@ function Settings({navigation}) {
         {user.email}
       </Text>
       <TouchableOpacity onPress={functionLogout}>
-        <Text style={styles.signOutButton}>
-          Sign out <Icon name="sign-out" size={30} color="#ffffff" />
-        </Text>
+        <Text style={styles.signOutButton}>Sign out</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -97,8 +93,11 @@ const styles = StyleSheet.create({
     marginLeft: 100,
     marginRight: 100,
     marginBottom: 20,
-    borderRadius: 25,
+    borderRadius: 8,
     marginTop: 24,
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36
   },
 });
 
