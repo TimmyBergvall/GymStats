@@ -2,6 +2,7 @@ import React, {useState, Route, useEffect} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CommonActions} from '@react-navigation/native';
+import firebase from '@react-native-firebase/app';
 
 import {
   Button,
@@ -20,6 +21,11 @@ import {
 
 function Settings({navigation}) {
   const user = auth().currentUser;
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState('');
+  const [goalWeight, setGoalWeight] = useState(0);
+  const [length, setLength] = useState(0);
+  const [weeklyGoal, setWeeklyGoal] = useState(0);
 
   const functionLogout = () => {
     Alert.alert(
@@ -40,6 +46,32 @@ function Settings({navigation}) {
     );
   };
 
+  useEffect(() => {
+    const user = auth().currentUser;
+    const db = firebase.firestore();
+    const userRef = db.collection('Users').doc(user.uid);
+    const detailsRef = userRef.collection('Details');
+    const userDetailsRef = detailsRef.doc('userDetails');
+
+    userDetailsRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          doc.data().age ? setAge(doc.data().age) : setAge(0);
+          doc.data().gender ? setGender(doc.data().gender) : setGender('');
+          doc.data().goalWeight ? setGoalWeight(doc.data().goalWeight) : setGoalWeight(0);
+          doc.data().length ? setLength(doc.data().length) : setLength(0);
+          doc.data().weeklyGoal ? setWeeklyGoal(doc.data().weeklyGoal) : setWeeklyGoal(0);
+
+        } else {
+          console.log('No such document!');
+        }
+      })
+      .catch(error => {
+        console.log('Error getting document:', error);
+      });
+  }, []);
+
   function signOut() {
     auth()
       .signOut()
@@ -51,46 +83,98 @@ function Settings({navigation}) {
       });
   }
 
+  const changeDetails = () => {
+    navigation.navigate('Details');
+  };
+
   return (
-    <ScrollView style={{backgroundColor: '#161616'}}>
-      <Text style={styles.startMessage}>Settings</Text>
-      <Text style={styles.user}>
-        Signed in as:{'\n'}
-        {user.email}
-      </Text>
-      <TouchableOpacity onPress={functionLogout}>
-        <Text style={styles.signOutButton}>Sign out</Text>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.subtitle}>Signed in as:</Text>
+      <Text style={styles.userEmail}>{user.email}</Text>
+
+      <Text style={styles.sectionTitle}>Your details:</Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.detailsText}>
+          Age: {age} {'\n'}
+          Gender: {gender} {'\n'}
+          Goal weight: {goalWeight} {'\n'}
+          Length: {length} {'\n'}
+          Weekly goal: {weeklyGoal}
+        </Text>
+      </View>
+
+      <TouchableOpacity onPress={changeDetails} style={styles.button}>
+        <Text style={styles.buttonText}>Change details</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={functionLogout} style={styles.signOutButton}>
+        <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  startMessage: {
-    marginTop: 30,
-    marginBottom: 5,
+  container: {
+    flex: 1,
+    backgroundColor: '#161616',
+    padding: 20,
+  },
+  title: {
     fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  userEmail: {
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  detailsContainer: {
+    backgroundColor: '#276B7F',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
+  },
+  detailsText: {
+    color: 'white',
+    fontSize: 16,
     textAlign: 'center',
   },
-  user: {
-    marginTop: 30,
-    marginBottom: 5,
-    fontSize: 18,
-    textAlign: 'center',
+  button: {
+    backgroundColor: '#276B7F',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
   },
   signOutButton: {
     backgroundColor: '#890000',
-    color: 'white',
-    fontSize: 24,
-    textAlign: 'center',
-    marginLeft: 100,
-    marginRight: 100,
-    marginBottom: 20,
     borderRadius: 8,
-    marginTop: 24,
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 36
+    padding: 10,
+    marginBottom: 20,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

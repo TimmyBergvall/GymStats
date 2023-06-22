@@ -9,7 +9,7 @@ import '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Home({navigation}) {
-  const user = firebase.auth().currentUser;
+  const user = auth().currentUser;
 
   useEffect(() => {
       const user = auth().currentUser;
@@ -40,7 +40,6 @@ function Home({navigation}) {
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
 
-      <Icon name="home" size={30} color="#900" />
 
     </ScrollView>
   );

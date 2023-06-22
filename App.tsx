@@ -53,7 +53,7 @@ function SignedInNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Weight" component={Weight} />
-      <Tab.Screen name="Details" component={Details} />
+      <Tab.Screen name="Details" component={Details} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Settings" component={Settings} options={{ tabBarButton: () => null }} />
       {/* Add more screens as needed */}
     </Tab.Navigator>
