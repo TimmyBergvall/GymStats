@@ -48,7 +48,7 @@ function Login({navigation}) {
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('User account created & signed in!');
+          console.log('User signed in!');
           navigation.replace('SignedIn');
         })
         .catch(error => {

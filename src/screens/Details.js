@@ -17,14 +17,10 @@ import {
   View,
 } from 'react-native';
 
-
-
-function Weight({ navigation }) {
-    
+function Details({ navigation }) {
   const user = firebase.auth().currentUser;
 
   const addWeight = async () => {
-    createDetails();
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
     const weightsRef = userRef.collection('Weights');
@@ -45,32 +41,6 @@ function Weight({ navigation }) {
       console.log('Error adding weight:', error);
     }
   };
-
-  const createDetails = async () => {
-    const db = firebase.firestore();
-    const userRef = db.collection('Users').doc(user.uid);
-    const detailsRef = userRef.collection('Details');
-    
-    try {
-      const userDetails = {
-        complete: false,
-        gender: "",
-        height: 0,
-        age: 0,
-        weeklyGoal: 0,
-        goalWeight: 0,
-      };
-    
-      // Set the user details document in the "Details" collection with merge: true
-      await detailsRef.doc('userDetails').set(userDetails, { merge: true });
-    
-      console.log('Details created/updated successfully!');
-    } catch (error) {
-      console.log('Error creating/updating details:', error);
-    }
-  };
-  
-  
   
   
 
@@ -122,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Weight;
+export default Details;

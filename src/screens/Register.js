@@ -1,6 +1,9 @@
 import React, {useState, Route} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {ToastAndroid} from 'react-native';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
 
 import {
   Button,
@@ -15,6 +18,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+
+
 
 function Register({navigation}) {
   const [email, setEmail] = useState('');
@@ -52,6 +57,7 @@ function Register({navigation}) {
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           console.log('User account created & signed in!');
+          createDetails();
           navigation.navigate('Home');
         })
         .catch(error => {
@@ -74,6 +80,30 @@ function Register({navigation}) {
         });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const createDetails = async () => {
+    const db = firebase.firestore();
+    const userRef = db.collection('Users').doc(user.uid);
+    const detailsRef = userRef.collection('Details');
+    
+    try {
+      const userDetails = {
+        complete: false,
+        gender: "",
+        height: 0,
+        age: 0,
+        weeklyGoal: 0,
+        goalWeight: 0,
+      };
+    
+      // Set the user details document in the "Details" collection with merge: true
+      await detailsRef.doc('userDetails').set(userDetails, { merge: true });
+    
+      console.log('Details created/updated successfully!');
+    } catch (error) {
+      console.log('Error creating/updating details:', error);
     }
   };
 
