@@ -19,13 +19,18 @@ import {
   View,
 } from 'react-native';
 
-
-
 function Register({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [startWeight, setStartWeight] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [length, setLength] = useState('');
+  const [weeklyGoal, setWeeklyGoal] = useState('');
 
   const functionRegister = () => {
     if (email === '') {
@@ -87,29 +92,91 @@ function Register({navigation}) {
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
     const detailsRef = userRef.collection('Details');
-    
+
+    if (age == '') {
+      ToastAndroid.show('Please enter your age', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (gender == '') {
+      ToastAndroid.show('Please enter your gender', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (startWeight == '') {
+      ToastAndroid.show('Please enter your current weight', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (goalWeight == '') {
+      ToastAndroid.show('Please enter your goal weight', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (length == '') {
+      ToastAndroid.show('Please enter your length', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (weeklyGoal == '') {
+      ToastAndroid.show('Please enter your weekly goal', ToastAndroid.SHORT);
+      return;
+    }
+
     try {
       const userDetails = {
-        complete: false,
-        gender: "",
-        length: "",
-        age: "",
-        weeklyGoal: "",
-        goalWeight: "",
+        complete: true,
+        gender: gender,
+        length: length,
+        age: age,
+        startWeight: startWeight,
+        weeklyGoal: weeklyGoal,
+        goalWeight: goalWeight,
       };
-    
+
       // Set the user details document in the "Details" collection with merge: true
-      await detailsRef.doc('userDetails').set(userDetails, { merge: true });
-    
+      await detailsRef.doc('userDetails').set(userDetails, {merge: true});
+
       console.log('Details created/updated successfully!');
+
+      addWeight();
+
+      navigation.navigate('Home');
     } catch (error) {
       console.log('Error creating/updating details:', error);
     }
   };
 
+  
+
+  const addWeight = async () => {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    const userRef = db.collection('Users').doc(user.uid);
+    const weightsRef = userRef.collection('Weights');
+  
+    try {
+      // Create a new weight document with the current date as the document ID
+      const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in the format 'YYYY-MM-DD'
+      const weightData = {
+        weight: startWeight,
+        date: firebase.firestore.Timestamp.fromDate(new Date()),
+      };
+  
+      // Add the weight document to the Weights subcollection with the current date as the document ID
+      await weightsRef.doc(currentDate).set(weightData);
+  
+      console.log('Weight added successfully!');
+    } catch (error) {
+      console.log('Error adding weight:', error);
+    }
+  };
+
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
+
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
+
 
       <TextInput
         style={styles.inputText}
@@ -132,6 +199,41 @@ function Register({navigation}) {
         onChangeText={passwordconfirm => setPasswordConfirm(passwordconfirm)}
       />
 
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        placeholder="Age"
+        onChangeText={text => setAge(text)}></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        onChangeText={text => setGender(text)}
+        placeholder="Gender"></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        onChangeText={text => setStartWeight(text)}
+        placeholder="Current Weight"></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        onChangeText={text => setGoalWeight(text)}
+        placeholder="Weight Goal"></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        onChangeText={text => setLength(text)}
+        placeholder="Length"></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        onChangeText={text => setWeeklyGoal(text)}
+        placeholder="Weekly Goal"></TextInput>
+
       <TouchableOpacity onPress={functionRegister}>
         <Text style={styles.registerButton}>Register</Text>
       </TouchableOpacity>
@@ -141,6 +243,7 @@ function Register({navigation}) {
           style={{
             color: 'lightblue',
             textAlign: 'center',
+            marginBottom: 60,
           }}>
           Already have an account?
         </Text>
@@ -151,8 +254,8 @@ function Register({navigation}) {
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 80,
-    marginBottom: 64,
+    marginTop: 40,
+    marginBottom: 20,
     fontSize: 28,
     textAlign: 'center',
   },
@@ -165,7 +268,7 @@ const styles = StyleSheet.create({
     marginRight: 80,
     marginBottom: 20,
     borderRadius: 10,
-    marginTop: 24,
+    marginTop: 40,
   },
   inputText: {
     height: 40,
@@ -173,7 +276,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: 64,
     marginRight: 64,
-    marginBottom: 40,
+    marginTop: 15,
   },
 });
 

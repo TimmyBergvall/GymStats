@@ -21,11 +21,12 @@ import {
 
 function Settings({navigation}) {
   const user = auth().currentUser;
-  const [age, setAge] = useState(0);
+  const [age, setAge] = useState("");
   const [gender, setGender] = useState('');
-  const [goalWeight, setGoalWeight] = useState(0);
-  const [length, setLength] = useState(0);
-  const [weeklyGoal, setWeeklyGoal] = useState(0);
+  const [startWeight, setStartWeight] = useState("");
+  const [goalWeight, setGoalWeight] = useState("");
+  const [length, setLength] = useState("");
+  const [weeklyGoal, setWeeklyGoal] = useState("");
 
   const functionLogout = () => {
     Alert.alert(
@@ -57,11 +58,12 @@ function Settings({navigation}) {
       .get()
       .then(doc => {
         if (doc.exists) {
-          doc.data().age ? setAge(doc.data().age) : setAge(0);
+          doc.data().age ? setAge(doc.data().age) : setAge("");
           doc.data().gender ? setGender(doc.data().gender) : setGender('');
-          doc.data().goalWeight ? setGoalWeight(doc.data().goalWeight) : setGoalWeight(0);
+          doc.data().startWeight ? setStartWeight(doc.data().startWeight) : setStartWeight('');
+          doc.data().goalWeight ? setGoalWeight(doc.data().goalWeight) : setGoalWeight("");
           doc.data().length ? setLength(doc.data().length) : setLength(0);
-          doc.data().weeklyGoal ? setWeeklyGoal(doc.data().weeklyGoal) : setWeeklyGoal(0);
+          doc.data().weeklyGoal ? setWeeklyGoal(doc.data().weeklyGoal) : setWeeklyGoal("");
 
         } else {
           console.log('No such document!');
@@ -98,6 +100,7 @@ function Settings({navigation}) {
         <Text style={styles.detailsText}>
           Age: {age} {'\n'}
           Gender: {gender} {'\n'}
+          Start weight: {startWeight} {'\n'}
           Goal weight: {goalWeight} {'\n'}
           Length: {length} {'\n'}
           Weekly goal: {weeklyGoal}

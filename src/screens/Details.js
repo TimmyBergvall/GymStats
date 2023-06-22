@@ -21,53 +21,14 @@ import {
 import {ToastAndroid} from 'react-native';
 
 function Details({navigation}) {
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [goalWeight, setGoalWeight] = useState("");
-  const [length, setLength] = useState("");
-  const [weeklyGoal, setWeeklyGoal] = useState("");
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [startWeight, setStartWeight] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [length, setLength] = useState('');
+  const [weeklyGoal, setWeeklyGoal] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      const user = auth().currentUser;
-      const db = firebase.firestore();
-      const userRef = db.collection('Users').doc(user.uid);
-      const detailsRef = userRef.collection('Details');
-      const userDetailsRef = detailsRef.doc('userDetails');
 
-      userDetailsRef
-        .get()
-        .then(doc => {
-          if (doc.exists) {
-            if (doc.data().complete == false) {
-              const disableBackGesture = () => true;
-
-              navigation.setOptions({
-                tabBarStyle: {display: 'none'},
-                headerRight: () => null,
-                headerLeft: () => null,
-              });
-
-              BackHandler.addEventListener('beforeRemove', disableBackGesture);
-
-              return () => {
-                BackHandler.removeEventListener(
-                  'beforeRemove',
-                  disableBackGesture,
-                );
-              };
-            }
-          } else {
-            console.log('No such document!');
-          }
-        })
-        .catch(error => {
-          console.log('Error getting document:', error);
-        });
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   useEffect(() => {
     const user = auth().currentUser;
@@ -80,13 +41,17 @@ function Details({navigation}) {
       .get()
       .then(doc => {
         if (doc.exists) {
-          if (doc.data().complete == true) {
-            doc.data().age ? setAge(doc.data().age) : setAge("");
-            doc.data().gender ? setGender(doc.data().gender) : setGender("");
-            doc.data().goalWeight ? setGoalWeight(doc.data().goalWeight) : setGoalWeight("");
-            doc.data().length ? setLength(doc.data().length) : setLength("");
-            doc.data().weeklyGoal ? setWeeklyGoal(doc.data().weeklyGoal) : setWeeklyGoal("");
-          }
+            doc.data().age ? setAge(doc.data().age) : setAge('');
+            doc.data().gender ? setGender(doc.data().gender) : setGender('');
+            doc.data().startWeight ? setStartWeight(doc.data().startWeight) : setStartWeight('');
+            doc.data().goalWeight
+              ? setGoalWeight(doc.data().goalWeight)
+              : setGoalWeight('');
+            doc.data().length ? setLength(doc.data().length) : setLength('');
+            doc.data().weeklyGoal
+              ? setWeeklyGoal(doc.data().weeklyGoal)
+              : setWeeklyGoal('');
+          
         } else {
           console.log('No such document!');
         }
@@ -102,27 +67,32 @@ function Details({navigation}) {
     const userRef = db.collection('Users').doc(user.uid);
     const detailsRef = userRef.collection('Details');
 
-    if (age == 0) {
+    if (age == "") {
       ToastAndroid.show('Please enter your age', ToastAndroid.SHORT);
       return;
     }
 
-    if (gender == '') {
+    if (gender == "") {
       ToastAndroid.show('Please enter your gender', ToastAndroid.SHORT);
       return;
     }
 
-    if (goalWeight == 0) {
+    if (startWeight == "") {
+      ToastAndroid.show('Please enter your current weight', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (goalWeight == "") {
       ToastAndroid.show('Please enter your goal weight', ToastAndroid.SHORT);
       return;
     }
 
-    if (length == 0) {
+    if (length == "") {
       ToastAndroid.show('Please enter your length', ToastAndroid.SHORT);
       return;
     }
 
-    if (weeklyGoal == 0) {
+    if (weeklyGoal == "") {
       ToastAndroid.show('Please enter your weekly goal', ToastAndroid.SHORT);
       return;
     }
@@ -133,6 +103,7 @@ function Details({navigation}) {
         gender: gender,
         length: length,
         age: age,
+        startWeight: startWeight,
         weeklyGoal: weeklyGoal,
         goalWeight: goalWeight,
       };
@@ -142,7 +113,8 @@ function Details({navigation}) {
 
       console.log('Details created/updated successfully!');
 
-      navigation.navigate('Home');
+      navigation.navigate('Settings');
+      ToastAndroid.show('Details updated successfully!', ToastAndroid.SHORT);
     } catch (error) {
       console.log('Error creating/updating details:', error);
     }
@@ -150,42 +122,60 @@ function Details({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
-      <Text style={styles.startMessage}>Enter details</Text>
+      <Text style={styles.startMessage}>Change Details</Text>
 
       <Text style={styles.textDescription}>Age:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-
-        onChangeText={text => setAge(text)}>{age}</TextInput>
+        onChangeText={text => setAge(text)}>
+        {age}
+      </TextInput>
 
       <Text style={styles.textDescription}>Gender:</Text>
 
       <TextInput
         style={styles.inputText}
-        onChangeText={text => setGender(text)}>{gender}</TextInput>
+        onChangeText={text => setGender(text)}>
+        {gender}
+      </TextInput>
+
+      <Text style={styles.textDescription}>Start Weight:</Text>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
+        onChangeText={text => setStartWeight(text)}>
+        {startWeight}
+      </TextInput>
 
       <Text style={styles.textDescription}>Weight Goal:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setGoalWeight(text)}>{goalWeight}</TextInput>
+        onChangeText={text => setGoalWeight(text)}>
+        {goalWeight}
+      </TextInput>
 
       <Text style={styles.textDescription}>Length:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setLength(text)}>{length}</TextInput>
+        onChangeText={text => setLength(text)}>
+        {length}
+      </TextInput>
 
       <Text style={styles.textDescription}>Weekly Goal:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setWeeklyGoal(text)}>{weeklyGoal}</TextInput>
+        onChangeText={text => setWeeklyGoal(text)}>
+        {weeklyGoal}
+      </TextInput>
 
       <TouchableOpacity
         onPress={() => {
@@ -199,8 +189,8 @@ function Details({navigation}) {
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: 20,
+    marginBottom: 20,
     fontSize: 28,
     textAlign: 'center',
   },
@@ -213,7 +203,7 @@ const styles = StyleSheet.create({
     marginRight: 64,
     marginBottom: 20,
     borderRadius: 10,
-    marginTop: 24,
+    marginTop: 18,
   },
   inputText: {
     height: 40,
@@ -221,7 +211,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: 64,
     marginRight: 64,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   textDescription: {
     fontSize: 18,

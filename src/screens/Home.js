@@ -9,33 +9,7 @@ import '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Home({navigation}) {
-  const user = auth().currentUser;
-
-  useEffect(() => {
-      const user = auth().currentUser;
-      const db = firebase.firestore();
-      const userRef = db.collection('Users').doc(user.uid);
-      const detailsRef = userRef.collection('Details');
-      const userDetailsRef = detailsRef.doc('userDetails');
   
-      userDetailsRef.get().then((doc) => {
-        if (doc.exists) {
-          if (doc.data().complete == false) {
-            navigation.navigate('Details');
-          }
-  
-        } else {
-            console.log('No such document!');
-            navigation.navigate('Details');
-        }
-      }).catch((error) => {
-        console.log('Error getting document:', error);
-      });
-  }, []);
-
-
- 
-
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>

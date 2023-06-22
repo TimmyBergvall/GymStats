@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   Touchable,
   TouchableOpacity,
   useColorScheme,
@@ -20,11 +21,10 @@ import {
 
 
 function Weight({ navigation }) {
-    
   const user = firebase.auth().currentUser;
+  const [weight, setWeight] = useState("");
 
   const addWeight = async () => {
-    createDetails();
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
     const weightsRef = userRef.collection('Weights');
@@ -33,7 +33,7 @@ function Weight({ navigation }) {
       // Create a new weight document with the current date as the document ID
       const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in the format 'YYYY-MM-DD'
       const weightData = {
-        weight: 80,
+        weight: weight,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
       };
   
@@ -41,52 +41,35 @@ function Weight({ navigation }) {
       await weightsRef.doc(currentDate).set(weightData);
   
       console.log('Weight added successfully!');
+      ToastAndroid.show('Weight added successfully!', ToastAndroid.SHORT);
     } catch (error) {
       console.log('Error adding weight:', error);
     }
   };
 
-  const createDetails = async () => {
-    const db = firebase.firestore();
-    const userRef = db.collection('Users').doc(user.uid);
-    const detailsRef = userRef.collection('Details');
-    
-    try {
-      const userDetails = {
-        complete: false,
-        gender: "",
-        height: 0,
-        age: 0,
-        weeklyGoal: 0,
-        goalWeight: 0,
-      };
-    
-      // Set the user details document in the "Details" collection with merge: true
-      await detailsRef.doc('userDetails').set(userDetails, { merge: true });
-    
-      console.log('Details created/updated successfully!');
-    } catch (error) {
-      console.log('Error creating/updating details:', error);
-    }
-  };
-  
-  
-  
-  
-
-
   return (
     <ScrollView style={{ backgroundColor: '#161616' }}>
-      <Text style={styles.startMessage}>Weight</Text>
+
+      <View style={styles.border}>
+      <Text style={styles.startMessage}>Today's Weight</Text>
+
+      <Text style={styles.description}>Weight:</Text>
+
+      <TextInput
+        style={styles.inputText}
+        autoCapitalize="none"
+        keyboardType='numeric'
+        onChangeText={weight => setWeight(weight)}
+      />
 
       <TouchableOpacity
-        style={styles.button}
         onPress={() => {
           addWeight();
         }}
       >
-        <Text style={styles.buttonText}>Add weight</Text>
+        <Text style={styles.button}>Set Weight</Text>
       </TouchableOpacity>
+      </View>
 
     </ScrollView>
   );
@@ -94,7 +77,7 @@ function Weight({ navigation }) {
 
 const styles = StyleSheet.create({
   startMessage: {
-    marginTop: 30,
+    marginTop: 50,
     marginBottom: 5,
     fontSize: 28,
     textAlign: 'center',
@@ -106,19 +89,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 64,
     marginRight: 64,
-    marginBottom: 20,
+    marginBottom: 50,
     borderRadius: 25,
     marginTop: 24,
   },
-  buttonText: {
+  inputText: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginLeft: 50,
+    marginRight: 50,
+    marginBottom: 40,
     color: 'white',
-    fontSize: 24,
-    textAlign: 'center',
-    marginLeft: 64,
-    marginRight: 64,
-    marginBottom: 20,
-    borderRadius: 25,
-    marginTop: 24,
+  },
+  border: {
+    backgroundColor: '#1F1F1F',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginLeft: 50,
+    marginRight: 50,
+    marginBottom: 30,
+    marginTop: 140,
+    color: 'white',
+  },
+  description: {
+    fontSize: 15,
+    marginLeft: 50,
+    marginBottom: 5,
+    color: 'white',
+    marginTop: 60,
   },
 });
 
