@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import {NavigationContainer, CommonActions} from '@react-navigation/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Home({navigation}) {
+  const user = firebase.auth().currentUser;
+
+  useEffect(() => {
+      const user = auth().currentUser;
+      const db = firebase.firestore();
+      const userRef = db.collection('Users').doc(user.uid);
+      const detailsRef = userRef.collection('Details');
+      const userDetailsRef = detailsRef.doc('userDetails');
+  
+      userDetailsRef.get().then((doc) => {
+        if (doc.exists) {
+          if (doc.data().complete == false) {
+            navigation.navigate('Details');
+          }
+  
+        } else {
+            console.log('No such document!');
+  
+        }
+      }).catch((error) => {
+        console.log('Error getting document:', error);
+      });
+  }, []);
+
+
  
 
   return (

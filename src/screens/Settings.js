@@ -1,6 +1,7 @@
 import React, {useState, Route, useEffect} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {CommonActions} from '@react-navigation/native';
 
 import {
   Button,
@@ -44,14 +45,6 @@ function Settings({navigation}) {
       .signOut()
       .then(() => {
         console.log('User signed out!');
-        if (navigation.canGoBack()) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Login'}],
-            }),
-          );
-        }
       })
       .catch(error => {
         console.log('Error signing out:', error);

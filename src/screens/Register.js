@@ -58,7 +58,6 @@ function Register({navigation}) {
         .then(() => {
           console.log('User account created & signed in!');
           createDetails();
-          navigation.navigate('Home');
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
@@ -84,6 +83,7 @@ function Register({navigation}) {
   };
 
   const createDetails = async () => {
+    const user = auth().currentUser;
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
     const detailsRef = userRef.collection('Details');
@@ -92,7 +92,7 @@ function Register({navigation}) {
       const userDetails = {
         complete: false,
         gender: "",
-        height: 0,
+        length: 0,
         age: 0,
         weeklyGoal: 0,
         goalWeight: 0,

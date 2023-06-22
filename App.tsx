@@ -13,6 +13,7 @@ import Register from './src/screens/Register';
 import Home from './src/screens/Home';
 import Weight from './src/screens/Weight';
 import Settings from './src/screens/Settings';
+import Details from './src/screens/Details';
 import { Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
@@ -30,7 +31,7 @@ function SignedInNavigator() {
         headerTitleStyle: { fontWeight: 'bold' },
         tabBarStyle: { backgroundColor: '#333333' },
         headerRight: () => 
-          <TouchableOpacity onPress={() => navigation.navigate(Settings)} style={{ marginRight: 10 }}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")} style={{ marginRight: 10 }}>
             <Icon name="settings-outline" size={25} color="#fff" />
           </TouchableOpacity>,
 
@@ -41,7 +42,9 @@ function SignedInNavigator() {
             iconName = 'home-outline'; // Icon name for the Home screen
           } else if (route.name === 'Weight') {
             iconName = 'barbell-outline'; // Icon name for the Weight screen
-          }
+          } else if (route.name === 'Details') {
+            iconName = 'list-outline'; // Icon name for the Details screen
+          } 
           // Add more conditions for additional screens
 
           return <Icon name={iconName as string} size={size} color={color} />;
@@ -50,6 +53,7 @@ function SignedInNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Weight" component={Weight} />
+      <Tab.Screen name="Details" component={Details} />
       <Tab.Screen name="Settings" component={Settings} options={{ tabBarButton: () => null }} />
       {/* Add more screens as needed */}
     </Tab.Navigator>

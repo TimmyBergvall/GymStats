@@ -2,6 +2,9 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {ToastAndroid} from 'react-native';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
 
 import {
   Button,
@@ -49,7 +52,6 @@ function Login({navigation}) {
         .signInWithEmailAndPassword(email, password)
         .then(() => {
           console.log('User signed in!');
-          navigation.replace('SignedIn');
         })
         .catch(error => {
           if (error.code === 'auth/invalid-email') {
@@ -66,6 +68,9 @@ function Login({navigation}) {
       console.log(error);
     }
   };
+
+
+
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
