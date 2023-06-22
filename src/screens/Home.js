@@ -26,7 +26,7 @@ function Home({navigation}) {
   
         } else {
             console.log('No such document!');
-  
+            navigation.navigate('Details');
         }
       }).catch((error) => {
         console.log('Error getting document:', error);

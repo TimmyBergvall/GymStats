@@ -92,10 +92,10 @@ function Register({navigation}) {
       const userDetails = {
         complete: false,
         gender: "",
-        length: 0,
-        age: 0,
-        weeklyGoal: 0,
-        goalWeight: 0,
+        length: "",
+        age: "",
+        weeklyGoal: "",
+        goalWeight: "",
       };
     
       // Set the user details document in the "Details" collection with merge: true

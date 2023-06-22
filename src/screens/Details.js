@@ -21,11 +21,11 @@ import {
 import {ToastAndroid} from 'react-native';
 
 function Details({navigation}) {
-  const [age, setAge] = useState(0);
-  const [gender, setGender] = useState('');
-  const [goalWeight, setGoalWeight] = useState(0);
-  const [length, setLength] = useState(0);
-  const [weeklyGoal, setWeeklyGoal] = useState(0);
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [goalWeight, setGoalWeight] = useState("");
+  const [length, setLength] = useState("");
+  const [weeklyGoal, setWeeklyGoal] = useState("");
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -68,6 +68,33 @@ function Details({navigation}) {
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    const user = auth().currentUser;
+    const db = firebase.firestore();
+    const userRef = db.collection('Users').doc(user.uid);
+    const detailsRef = userRef.collection('Details');
+    const userDetailsRef = detailsRef.doc('userDetails');
+
+    userDetailsRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          if (doc.data().complete == true) {
+            doc.data().age ? setAge(doc.data().age) : setAge("");
+            doc.data().gender ? setGender(doc.data().gender) : setGender("");
+            doc.data().goalWeight ? setGoalWeight(doc.data().goalWeight) : setGoalWeight("");
+            doc.data().length ? setLength(doc.data().length) : setLength("");
+            doc.data().weeklyGoal ? setWeeklyGoal(doc.data().weeklyGoal) : setWeeklyGoal("");
+          }
+        } else {
+          console.log('No such document!');
+        }
+      })
+      .catch(error => {
+        console.log('Error getting document:', error);
+      });
+  }, []);
 
   const setDetails = async () => {
     const user = auth().currentUser;
@@ -130,34 +157,35 @@ function Details({navigation}) {
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setAge(text)}></TextInput>
+
+        onChangeText={text => setAge(text)}>{age}</TextInput>
 
       <Text style={styles.textDescription}>Gender:</Text>
 
       <TextInput
         style={styles.inputText}
-        onChangeText={text => setGender(text)}></TextInput>
+        onChangeText={text => setGender(text)}>{gender}</TextInput>
 
       <Text style={styles.textDescription}>Weight Goal:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setGoalWeight(text)}></TextInput>
+        onChangeText={text => setGoalWeight(text)}>{goalWeight}</TextInput>
 
       <Text style={styles.textDescription}>Length:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setLength(text)}></TextInput>
+        onChangeText={text => setLength(text)}>{length}</TextInput>
 
       <Text style={styles.textDescription}>Weekly Goal:</Text>
 
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setWeeklyGoal(text)}></TextInput>
+        onChangeText={text => setWeeklyGoal(text)}>{weeklyGoal}</TextInput>
 
       <TouchableOpacity
         onPress={() => {
