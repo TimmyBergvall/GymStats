@@ -31,7 +31,7 @@ function Weight({ navigation }) {
   
     try {
       // Create a new weight document with the current date as the document ID
-      const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in the format 'YYYY-MM-DD'
+      const currentDate = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' }).split(' ')[0];
       const weightData = {
         weight: weight,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
