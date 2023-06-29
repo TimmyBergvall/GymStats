@@ -14,6 +14,7 @@ import Home from './src/screens/Home';
 import Weight from './src/screens/Weight';
 import Settings from './src/screens/Settings';
 import Details from './src/screens/Details';
+import Workouts from './src/screens/Workouts';
 import { Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
@@ -53,6 +54,7 @@ function SignedInNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Weight" component={Weight} />
+      <Tab.Screen name="Workouts" component={Workouts} />
       <Tab.Screen name="Details" component={Details} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Settings" component={Settings} options={{ tabBarButton: () => null }} />
       {/* Add more screens as needed */}

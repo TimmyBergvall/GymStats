@@ -18,14 +18,14 @@ import {
   View,
 } from 'react-native';
 
-function Weight({navigation}) {
+function Workouts({navigation}) {
   const user = firebase.auth().currentUser;
-  const [weight, setWeight] = useState('');
+  const [workout, setWorkout] = useState('');
 
   const addWeight = async () => {
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
-    const weightsRef = userRef.collection('Weights');
+    const workoutRef = userRef.collection('Workouts');
 
     try {
       // Create a new weight document with the current date as the document ID
@@ -33,15 +33,15 @@ function Weight({navigation}) {
         .toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'})
         .split(' ')[0];
       const weightData = {
-        weight: weight,
+        workout: workout,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
       };
 
       // Add the weight document to the Weights subcollection with the current date as the document ID
-      await weightsRef.doc(currentDate).set(weightData);
+      await workoutRef.doc(currentDate).set(weightData);
 
       console.log('Weight added successfully!');
-      setWeight('');
+      setWorkout('');
       navigation.navigate('Home');
       ToastAndroid.show('Weight added successfully!', ToastAndroid.SHORT);
     } catch (error) {
@@ -52,7 +52,7 @@ function Weight({navigation}) {
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <View style={styles.border}>
-        <Text style={styles.startMessage}>Today's Weight</Text>
+        <Text style={styles.startMessage}>Workout Sessions</Text>
 
         <Text style={styles.description}>Weight:</Text>
 
@@ -60,15 +60,15 @@ function Weight({navigation}) {
           style={styles.inputText}
           autoCapitalize="none"
           keyboardType="numeric"
-          value={weight}
-          onChangeText={weight => setWeight(weight)}
+          value={workout}
+          onChangeText={weight => setWorkout(weight)}
         />
 
         <TouchableOpacity
           onPress={() => {
             addWeight();
           }}>
-          <Text style={styles.button}>Set Weight</Text>
+          <Text style={styles.button}>Add Session</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Weight;
+export default Workouts;

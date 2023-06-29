@@ -147,14 +147,12 @@ function Register({navigation}) {
     }
   };
 
-  
-
   const addWeight = async () => {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
     const userRef = db.collection('Users').doc(user.uid);
     const weightsRef = userRef.collection('Weights');
-  
+
     try {
       // Create a new weight document with the current date as the document ID
       const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in the format 'YYYY-MM-DD'
@@ -162,10 +160,10 @@ function Register({navigation}) {
         weight: startWeight,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
       };
-  
+
       // Add the weight document to the Weights subcollection with the current date as the document ID
       await weightsRef.doc(currentDate).set(weightData);
-  
+
       console.log('Weight added successfully!');
     } catch (error) {
       console.log('Error adding weight:', error);
@@ -174,9 +172,7 @@ function Register({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
-
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
-
 
       <TextInput
         style={styles.inputText}
@@ -213,6 +209,12 @@ function Register({navigation}) {
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
+        onChangeText={text => setLength(text)}
+        placeholder="Length"></TextInput>
+
+      <TextInput
+        style={styles.inputText}
+        keyboardType="numeric"
         onChangeText={text => setStartWeight(text)}
         placeholder="Current Weight"></TextInput>
 
@@ -225,14 +227,8 @@ function Register({navigation}) {
       <TextInput
         style={styles.inputText}
         keyboardType="numeric"
-        onChangeText={text => setLength(text)}
-        placeholder="Length"></TextInput>
-
-      <TextInput
-        style={styles.inputText}
-        keyboardType="numeric"
         onChangeText={text => setWeeklyGoal(text)}
-        placeholder="Weekly Goal"></TextInput>
+        placeholder="Weekly Training Goal"></TextInput>
 
       <TouchableOpacity onPress={functionRegister}>
         <Text style={styles.registerButton}>Register</Text>
