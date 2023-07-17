@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {NavigationContainer, CommonActions} from '@react-navigation/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
@@ -9,12 +9,9 @@ import '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Home({navigation}) {
-  
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
       <Text style={styles.startMessage}>Welcome to GymStats</Text>
-
-
     </ScrollView>
   );
 }
