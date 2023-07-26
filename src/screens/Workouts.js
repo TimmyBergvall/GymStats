@@ -28,11 +28,11 @@ function Workouts({navigation}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const data = [
-    {key: '1', value: 'Biceps'},
+    {key: '1', value: 'Back'},
     {key: '2', value: 'Triceps'},
-    {key: '3', value: 'Shoulders'},
-    {key: '4', value: 'Chest'},
-    {key: '5', value: 'Back'},
+    {key: '3', value: 'Chest'},
+    {key: '4', value: 'Biceps'},
+    {key: '5', value: 'Shoulders'},
     {key: '6', value: 'Legs'},
     {key: '7', value: 'Glutes'},
   ];
