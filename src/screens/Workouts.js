@@ -17,22 +17,24 @@ import {
   Touchable,
   TouchableOpacity,
   useColorScheme,
+  Modal,
   View,
 } from 'react-native';
 
 function Workouts({navigation}) {
   const user = firebase.auth().currentUser;
   const [workout, setWorkout] = useState('');
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const data = [
-    {key: '1', value: 'Mobiles', disabled: true},
-    {key: '2', value: 'Appliances'},
-    {key: '3', value: 'Cameras'},
-    {key: '4', value: 'Computers', disabled: true},
-    {key: '5', value: 'Vegetables'},
-    {key: '6', value: 'Diary Products'},
-    {key: '7', value: 'Drinks'},
+    {key: '1', value: 'Biceps'},
+    {key: '2', value: 'Triceps'},
+    {key: '3', value: 'Shoulders'},
+    {key: '4', value: 'Chest'},
+    {key: '5', value: 'Back'},
+    {key: '6', value: 'Legs'},
+    {key: '7', value: 'Glutes'},
   ];
 
   const addWeight = async () => {
@@ -64,7 +66,7 @@ function Workouts({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
-      <View style={styles.border}>
+     
         <Text style={styles.startMessage}>Workout Sessions</Text>
 
         <Text style={styles.description}>Workout description:</Text>
@@ -78,13 +80,17 @@ function Workouts({navigation}) {
               setSelected={val => setSelected(val)}
               data={data}
               save="value"
-              label="Categories"
+              label="Trained Muscles"
+              dropdownStyles={{backgroundColor:'#276B7F'}}
+              search={false}
+              placeholder='Select Muscles'
+              maxHeight={1000}
             />
           </View>
         </View>
 
-        <Text style={styles.description}>Workout time:</Text>
-
+        <Text style={styles.description}>Workout time: (Minutes)</Text>
+        <View style={styles.container}>
         <TextInput
           style={styles.inputText}
           autoCapitalize="none"
@@ -92,45 +98,57 @@ function Workouts({navigation}) {
           value={workout}
           onChangeText={weight => setWorkout(weight)}
         />
-
+</View>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => {
             addWeight();
           }}>
           <Text style={styles.button}>Add Session</Text>
         </TouchableOpacity>
-      </View>
+     </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  startMessage: {
+startMessage: {
     marginTop: 50,
     marginBottom: 65,
     fontSize: 28,
     textAlign: 'center',
+    color: '#FFFFFF', // White text color
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 40, // Increase the top margin for better spacing
+    marginBottom: 50, // Increase the bottom margin for better spacing
   },
   button: {
-    backgroundColor: '#276B7F',
-    color: 'white',
-    fontSize: 24,
+    backgroundColor: '#276B7F', // Change the background color
+    color: 'white', // Change the text color
+    fontSize: 24, // Change the font size
     textAlign: 'center',
-    marginLeft: 64,
-    marginRight: 64,
-    marginBottom: 50,
-    borderRadius: 25,
-    marginTop: 24,
+    paddingVertical: 16, // Adjust vertical padding
+    paddingHorizontal: 24, // Adjust horizontal padding
+    borderRadius: 8, // Adjust border radius
+    borderWidth: 2, // Add a border width
+    borderColor: 'white', // Change the border color
+    shadowColor: 'black', // Change the shadow color (iOS specific)
+    shadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset (iOS specific)
+    shadowOpacity: 0.6, // Adjust the shadow opacity (iOS specific)
+    shadowRadius: 3, // Adjust the shadow radius (iOS specific)
+    elevation: 3, // Add a shadow effect (Android specific)
   },
   inputText: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginLeft: 50,
-    marginRight: 50,
+    borderColor: '#3D6D87', // Update the border color
+    borderBottomWidth: 1, // Use borderBottomWidth for a better look
+    width: '75%',
     marginBottom: 40,
-    padding: 22,
-    color: 'white',
+    paddingHorizontal: 12,
+    color: '#FFFFFF',
+    fontSize: 18,
   },
   border: {
     backgroundColor: '#2d3030',
@@ -146,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 50,
     marginBottom: 5,
-    color: 'white',
+    color: '#B3B3B3', // Lighter gray text color
   },
   container: {
     flex: 1,
@@ -154,11 +172,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectListContainer: {
-    width: '70%',
-    padding: 8,
+    width: '75%', // Increase the width for better visibility
+    marginBottom: 20, // Add some margin at the bottom for spacing
   },
-  box: {
-    borderRadius: 0,
+ box: {
+  borderColor: '#3D6D87', // Update the border color
+  borderBottomWidth: 1, // Use borderBottomWidth for a better look
+  color: '#FFFFFF',
+  fontSize: 18,
   },
 });
 
