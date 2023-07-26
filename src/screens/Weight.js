@@ -20,7 +20,7 @@ import {
 
 function Weight({navigation}) {
   const user = firebase.auth().currentUser;
-  const [weight, setWeight] = useState("");
+  const [weight, setWeight] = useState('');
 
   const addWeight = async () => {
     const db = firebase.firestore();
@@ -28,9 +28,8 @@ function Weight({navigation}) {
     const weightsRef = userRef.collection('Weights');
 
     try {
-
-      if(weight == "") {
-        ToastAndroid.show("Weight can not be empty", ToastAndroid.SHORT);
+      if (weight == '') {
+        ToastAndroid.show('Weight can not be empty', ToastAndroid.SHORT);
         return;
       }
 
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#276B7F',
+    backgroundColor: '#315E5D',
     color: 'white',
     fontSize: 24,
     textAlign: 'center',

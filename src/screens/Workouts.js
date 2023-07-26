@@ -66,31 +66,29 @@ function Workouts({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#161616'}}>
-     
-        <Text style={styles.startMessage}>Workout Sessions</Text>
+      <Text style={styles.startMessage}>Workout Sessions</Text>
 
-        <Text style={styles.description}>Workout description:</Text>
+      <Text style={styles.description}>Workout description:</Text>
 
-        <View style={styles.container}>
-          <View style={styles.selectListContainer}>
-
-
-            <MultipleSelectList
-              boxStyles={styles.box}
-              setSelected={val => setSelected(val)}
-              data={data}
-              save="value"
-              label="Trained Muscles"
-              dropdownStyles={{backgroundColor:'#276B7F'}}
-              search={false}
-              placeholder='Select Muscles'
-              maxHeight={1000}
-            />
-          </View>
+      <View style={styles.container}>
+        <View style={styles.selectListContainer}>
+          <MultipleSelectList
+            boxStyles={styles.box}
+            setSelected={val => setSelected(val)}
+            data={data}
+            save="value"
+            label="Trained Muscles"
+            dropdownStyles={{backgroundColor: '#315E5D'}}
+            search={false}
+            placeholder="Select Muscles"
+            maxHeight={10000}
+            scr
+          />
         </View>
+      </View>
 
-        <Text style={styles.description}>Workout time: (Minutes)</Text>
-        <View style={styles.container}>
+      <Text style={styles.description}>Workout time: (Minutes)</Text>
+      <View style={styles.container}>
         <TextInput
           style={styles.inputText}
           autoCapitalize="none"
@@ -98,7 +96,7 @@ function Workouts({navigation}) {
           value={workout}
           onChangeText={weight => setWorkout(weight)}
         />
-</View>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -106,13 +104,13 @@ function Workouts({navigation}) {
           }}>
           <Text style={styles.button}>Add Session</Text>
         </TouchableOpacity>
-     </View>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-startMessage: {
+  startMessage: {
     marginTop: 50,
     marginBottom: 65,
     fontSize: 28,
@@ -121,11 +119,11 @@ startMessage: {
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 40, // Increase the top margin for better spacing
+    marginTop: 20, // Increase the top margin for better spacing
     marginBottom: 50, // Increase the bottom margin for better spacing
   },
   button: {
-    backgroundColor: '#276B7F', // Change the background color
+    backgroundColor: '#315E5D', // Change the background color
     color: 'white', // Change the text color
     fontSize: 24, // Change the font size
     textAlign: 'center',
@@ -135,7 +133,7 @@ startMessage: {
     borderWidth: 2, // Add a border width
     borderColor: 'white', // Change the border color
     shadowColor: 'black', // Change the shadow color (iOS specific)
-    shadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset (iOS specific)
+    shadowOffset: {width: 2, height: 2}, // Adjust the shadow offset (iOS specific)
     shadowOpacity: 0.6, // Adjust the shadow opacity (iOS specific)
     shadowRadius: 3, // Adjust the shadow radius (iOS specific)
     elevation: 3, // Add a shadow effect (Android specific)
@@ -175,11 +173,11 @@ startMessage: {
     width: '75%', // Increase the width for better visibility
     marginBottom: 20, // Add some margin at the bottom for spacing
   },
- box: {
-  borderColor: '#3D6D87', // Update the border color
-  borderBottomWidth: 1, // Use borderBottomWidth for a better look
-  color: '#FFFFFF',
-  fontSize: 18,
+  box: {
+    borderColor: '#3D6D87', // Update the border color
+    borderBottomWidth: 1, // Use borderBottomWidth for a better look
+    color: '#FFFFFF',
+    fontSize: 18,
   },
 });
 
