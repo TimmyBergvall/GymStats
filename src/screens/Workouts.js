@@ -58,7 +58,7 @@ function Workouts({navigation}) {
       console.log('Weight added successfully!');
       setWorkout('');
       navigation.navigate('Home');
-      ToastAndroid.show('Weight added successfully!', ToastAndroid.SHORT);
+      ToastAndroid.show('Workout added successfully!', ToastAndroid.SHORT);
     } catch (error) {
       console.log('Error adding weight:', error);
     }
@@ -82,7 +82,9 @@ function Workouts({navigation}) {
             search={false}
             placeholder="Select Muscles"
             maxHeight={10000}
-            scr
+            labelStyles={{color:'#dddddd'}}
+            dropdownTextStyles={{color:'white'}}
+            inputStyles={{color:'white'}}
           />
         </View>
       </View>
