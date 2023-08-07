@@ -43,7 +43,7 @@ function SignedInNavigator() {
             iconName = 'home-outline'; // Icon name for the Home screen
           } else if (route.name === 'Weight') {
             iconName = 'barbell-outline'; // Icon name for the Weight screen
-          } else if (route.name === 'Details') {
+          } else if (route.name === 'Workouts') {
             iconName = 'list-outline'; // Icon name for the Details screen
           } 
           // Add more conditions for additional screens

@@ -23,16 +23,16 @@ import {
 
 function Workouts({navigation}) {
   const user = firebase.auth().currentUser;
-  const [workout, setWorkout] = useState('');
+  const [workoutTime, setWorkout] = useState('');
   const [selected, setSelected] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const data = [
     {key: '1', value: 'Back'},
-    {key: '2', value: 'Triceps'},
+    {key: '2', value: 'Biceps'},
     {key: '3', value: 'Chest'},
-    {key: '4', value: 'Biceps'},
+    {key: '4', value: 'Triceps'},
     {key: '5', value: 'Shoulders'},
+    {key: '7', value: 'Forearms'},
     {key: '6', value: 'Legs'},
     {key: '7', value: 'Glutes'},
   ];
@@ -43,12 +43,17 @@ function Workouts({navigation}) {
     const workoutRef = userRef.collection('Workouts');
 
     try {
+      if (workoutTime == 0) {
+        ToastAndroid.show('Please enter workout time!', ToastAndroid.SHORT);
+        return;
+      }
       // Create a new weight document with the current date as the document ID
       const currentDate = new Date()
         .toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'})
         .split(' ')[0];
       const weightData = {
-        workout: workout,
+        workoutTime: workoutTime,
+        muscles: selected,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
       };
 
@@ -57,6 +62,7 @@ function Workouts({navigation}) {
 
       console.log('Weight added successfully!');
       setWorkout('');
+      setSelected('');
       navigation.navigate('Home');
       ToastAndroid.show('Workout added successfully!', ToastAndroid.SHORT);
     } catch (error) {
@@ -82,9 +88,9 @@ function Workouts({navigation}) {
             search={false}
             placeholder="Select Muscles"
             maxHeight={10000}
-            labelStyles={{color:'#dddddd'}}
-            dropdownTextStyles={{color:'white'}}
-            inputStyles={{color:'white'}}
+            labelStyles={{color: '#dddddd'}}
+            dropdownTextStyles={{color: 'white'}}
+            inputStyles={{color: 'white'}}
           />
         </View>
       </View>
@@ -95,7 +101,7 @@ function Workouts({navigation}) {
           style={styles.inputText}
           autoCapitalize="none"
           keyboardType="numeric"
-          value={workout}
+          value={workoutTime}
           onChangeText={weight => setWorkout(weight)}
         />
       </View>
