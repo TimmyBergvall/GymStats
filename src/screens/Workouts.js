@@ -24,7 +24,7 @@ import {
 function Workouts({navigation}) {
   const user = firebase.auth().currentUser;
   const [workoutTime, setWorkout] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState('hhh');
 
   const data = [
     {key: '1', value: 'Back'},
@@ -81,6 +81,7 @@ function Workouts({navigation}) {
           <MultipleSelectList
             boxStyles={styles.box}
             setSelected={val => setSelected(val)}
+            selected={selected}
             data={data}
             save="value"
             label="Trained Muscles"
